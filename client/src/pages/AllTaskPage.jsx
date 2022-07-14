@@ -1,19 +1,19 @@
 import React, { Suspense, lazy, Fragment } from "react";
 import LazyLoader from "../components/MasterLayout/LazyLoader";
 import MasterLayout from "../components/MasterLayout/MasterLayout";
+import FormValidation from "../helper/FormValidation";
+const AllTask = lazy(() => import("../components/AllTask/AllTask"));
 
-const Dashboard = lazy(() => import("../components/Dashboard/Dashboard"));
-
-const DashboardPage = () => {
+const AllTaskPage = () => {
   return (
     <>
       <MasterLayout>
         <Suspense fallback={<LazyLoader />}>
-          <Dashboard />
+          <AllTask />
         </Suspense>
       </MasterLayout>
     </>
   );
 };
 
-export default DashboardPage;
+export default AllTaskPage;

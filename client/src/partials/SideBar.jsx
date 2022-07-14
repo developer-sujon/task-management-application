@@ -20,24 +20,24 @@ function SideBar({ openMenu, setOpenMenu }) {
     <div className={openMenu ? "side-nav-open" : "side-nav-close"}>
       <Nav className="flex-column pt-2">
         <NavItem title="Dashboard" link="/dashboard" Icon={RiDashboardLine} />
-        <NavItem title="Contact" link="/contact" Icon={BsEnvelope} />
-        <NavItem title="Chart" link="/chart" Icon={BsBarChart} />
-        <NavItem title="Course" link="/course" Icon={MdCastForEducation} />
+        <NavItem title="All Task" link="/all-task" Icon={BsBarChart} />
+        <NavItem title="Create Task" link="/create-task" Icon={BsEnvelope} />
+        <NavItem title="New Task" link="/new-task" Icon={MdCastForEducation} />
 
         <NavItem
-          title="Project"
-          link="/project"
+          title="Pending Task"
+          link="/pending-task"
           Icon={AiOutlineFundProjectionScreen}
         />
 
         <NavItem
-          title="Service"
-          link="/service"
+          title="Cancled Task"
+          link="/cancled-task"
           Icon={MdOutlineMiscellaneousServices}
         />
         <NavItem
-          title="Testimonial"
-          link="/testimonial"
+          title="Complate Task"
+          link="/complate-task"
           Icon={MdOutlineRateReview}
         />
 

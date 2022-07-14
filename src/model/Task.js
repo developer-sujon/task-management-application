@@ -16,13 +16,8 @@ const taskSchema = Schema(
     },
     status: {
       type: String,
-      enum: ["new", "progress", "canceled", "complate"],
+      enum: ["new", "pending", "canceled", "complate"],
       default: "new",
-    },
-    role: {
-      type: String,
-      enum: ["admin", "user"],
-      default: "user",
     },
     user: {
       type: Schema.Types.ObjectId,

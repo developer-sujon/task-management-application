@@ -22,10 +22,12 @@ const userSchema = Schema(
     phone: {
       type: String,
       unique: true,
+      require: true,
       trim: true,
     },
     password: {
       type: String,
+      require: true,
     },
     photo: String,
   },

@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { Suspense, lazy, Fragment } from "react";
+import LazyLoader from "../components/MasterLayout/LazyLoader";
+import MasterLayout from "../components/MasterLayout/MasterLayout";
+
+const PendingTask = lazy(() => import("../components/PendingTask/PendingTask"));
 
 const PendingTaskPage = () => {
   return (
-    <div>PendingTaskPage</div>
-  )
-}
+    <>
+      <MasterLayout>
+        <Suspense fallback={<LazyLoader />}>
+          <PendingTask />
+        </Suspense>
+      </MasterLayout>
+    </>
+  );
+};
 
-export default PendingTaskPage
+export default PendingTaskPage;

@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { Suspense, lazy, Fragment } from "react";
+import LazyLoader from "../components/MasterLayout/LazyLoader";
+import MasterLayout from "../components/MasterLayout/MasterLayout";
+
+const NewTask = lazy(() => import("../components/NewTask/NewTask"));
 
 const NewTaskPage = () => {
   return (
-    <div>NewTaskPage</div>
-  )
-}
+    <>
+      <MasterLayout>
+        <Suspense fallback={<LazyLoader />}>
+          <NewTask />
+        </Suspense>
+      </MasterLayout>
+    </>
+  );
+};
 
-export default NewTaskPage
+export default NewTaskPage;

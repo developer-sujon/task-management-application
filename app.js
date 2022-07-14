@@ -1,5 +1,7 @@
 //external Lib  imports
 const express = require("express");
+require("express-async-errors");
+
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const path = require("path");
@@ -50,8 +52,8 @@ app.use(limiter);
 
 const MONGODB_CONNECTION_URL = process.env.MONGODB_CONNECTION_URL;
 const DB_OPTIONS = {
-  //user: process.env.MONGODB_DATABASE_USERNAME,
-  //pass: process.env.MONGODB_DATABASE_PASSWORD,
+  user: process.env.MONGODB_DATABASE_USERNAME,
+  pass: process.env.MONGODB_DATABASE_PASSWORD,
   dbName: "task",
   autoIndex: true,
 };
@@ -75,13 +77,9 @@ app.get("*", (req, res) => {
 
 // Default Error Handler
 app.use((err, req, res, next) => {
-  if (err.message) {
-    res.status(500).send({ status: "fail", data: err.message });
-  } else {
-    res
-      .status(500)
-      .send({ status: "fail", data: "There was an server side error!" });
-  }
+  const message = err.message ?? "Server Error Occured";
+  const status = err.status ?? 500;
+  res.status(status).json({ message });
 });
 
 module.exports = app;

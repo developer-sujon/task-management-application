@@ -13,11 +13,12 @@ import { NavLink } from "react-router-dom";
 
 //Internal Lib Import
 import logo from "../assets/images/logo.svg";
+import SessionHelper from "../helper/SessionHelper";
 
 function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [logOutRedirect, setLogOutRedirect] = useState(false);
+  const user = SessionHelper.getUserDetails();
 
   const FullScreen = () => {
     if (isFullScreen === true) {
@@ -40,6 +41,12 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
       }
       setIsFullScreen(true);
     }
+  };
+
+  const logoutUser = () => {
+    SessionHelper.removeToken("accessToken");
+    SessionHelper.removeUserDetails("user");
+    window.location.href = "/login";
   };
 
   return (
@@ -69,8 +76,8 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
             <div className="user-dropdown">
               <img
                 className="icon-nav-img icon-nav"
-                src="https://avatars.githubusercontent.com/u/65336862?v=4"
-                alt="avater"
+                src={user && user.photo}
+                alt={user && user.userName}
                 onClick={() => setOpenDropdown(!openDropdown)}
               />
               <div
@@ -83,10 +90,10 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
                 <div className="mt-4 text-center">
                   <img
                     className="icon-nav-img"
-                    src="https://avatars.githubusercontent.com/u/65336862?v=4"
-                    alt="avater"
+                    src={user && user.photo}
+                    alt={user && user.userName}
                   />
-                  <h6>Mohammad Sujon</h6>
+                  <h6>{user && user.name}</h6>
                   <hr className="user-dropdown-divider  p-0" />
                 </div>
                 <NavLink
@@ -98,15 +105,14 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
                   <AiOutlineUser className="link-item-icon" />
                   <span className="link-item-caption">Profile</span>
                 </NavLink>
-                <NavLink
-                  to="/b"
-                  className={({ isActive }) =>
-                    isActive ? "link-item-active" : "link-item"
-                  }
+                <span
+                  onClick={logoutUser}
+                  className="link-item"
+                  style={{ cursor: "pointer" }}
                 >
                   <AiOutlineLogout className="link-item-icon" />
                   <span className="link-item-caption">Logout</span>
-                </NavLink>
+                </span>
               </div>
             </div>
           </div>

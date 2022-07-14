@@ -2,6 +2,7 @@
 
 @import "./sidebar.css";
 @import "./navigation.css";
+@import "./progress.css";
 
 body {
   background: #f9f8f8;

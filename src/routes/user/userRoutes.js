@@ -9,7 +9,7 @@ const {
   selectUser,
   deleteUser,
 } = require("../../controller/user/userController");
-const { checkLogin } = require("../../middleware/authVerify");
+const authVerify = require("../../middleware/authVerify");
 
 //registrationUser
 userRoutes.post("/registrationUser", registrationUser);
@@ -18,12 +18,12 @@ userRoutes.post("/registrationUser", registrationUser);
 userRoutes.post("/loginUser", loginUser);
 
 //updateUser
-userRoutes.patch("/updateUser", checkLogin, updateUser);
+userRoutes.patch("/updateUser", authVerify, updateUser);
 
 //selectUser
-userRoutes.get("/selectUser", checkLogin, selectUser);
+userRoutes.get("/selectUser", authVerify, selectUser);
 
 //deleteUser
-userRoutes.delete("/deleteUser", checkLogin, deleteUser);
+userRoutes.delete("/deleteUser", authVerify, deleteUser);
 
 module.exports = userRoutes;

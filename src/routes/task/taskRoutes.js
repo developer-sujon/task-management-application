@@ -9,25 +9,33 @@ const {
   deleteTask,
   updateTask,
   dashboardSummary,
+  filterTaskByDateAndStatus,
 } = require("../../controller/task/taskController");
-const { checkLogin } = require("../../middleware/authVerify");
+const authVerify = require("../../middleware/authVerify");
 
 //createTask
-TaskRoutes.post("/createTask", checkLogin, createTask);
+TaskRoutes.post("/createTask", authVerify, createTask);
 
 //selectTask
-TaskRoutes.get("/selectTask", checkLogin, selectTask);
+TaskRoutes.get("/selectTask", authVerify, selectTask);
 
 //selectTaskByStatus
-TaskRoutes.get("/selectTaskByStatus/:status", checkLogin, selectTaskByStatus);
+TaskRoutes.get("/selectTaskByStatus/:status", authVerify, selectTaskByStatus);
 
 //deleteTask
-TaskRoutes.delete("/deleteTask/:id", checkLogin, deleteTask);
+TaskRoutes.delete("/deleteTask/:id", authVerify, deleteTask);
 
 //updateTask
-TaskRoutes.patch("/updateTask/:id", checkLogin, updateTask);
+TaskRoutes.patch("/updateTask/:id", authVerify, updateTask);
+
+//filterTaskByDateAndStatus
+TaskRoutes.post(
+  "/filterTaskByDateAndStatus",
+  authVerify,
+  filterTaskByDateAndStatus,
+);
 
 //dashboardSummary
-TaskRoutes.get("/dashboardSummary", checkLogin, dashboardSummary);
+TaskRoutes.get("/dashboardSummary", authVerify, dashboardSummary);
 
 module.exports = TaskRoutes;

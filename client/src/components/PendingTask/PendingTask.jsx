@@ -7,18 +7,19 @@ import {
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import ApiRequest from "../../APIRequest/ApiRequest";
-const AllTask = () => {
+
+const PendingTask = () => {
   useEffect(() => {
-    ApiRequest.SetAllTaskRequest();
+    ApiRequest.SetTaskStatusRequest("pending");
   }, []);
 
-  const allTask = useSelector((state) => state.task.allTask);
+  const pendingTask = useSelector((state) => state.task.pendingTask);
 
   return (
     <Container fluid={true} className="content-body">
       <div className="row p-0 m-0">
         <div className="col-12 col-md-3 col-lg-3 px-3">
-          <h5>Task Canceled</h5>
+          <h5>Task Pending</h5>
         </div>
         <div className="col-12 col-md-3 col-lg-5 px-3">
           <div className="row">
@@ -42,18 +43,8 @@ const AllTask = () => {
         </div>
       </div>
       <div className="row p-0 m-0">
-        {allTask &&
-          allTask.map((task) => {
-            let badgeColor = "";
-            if (task.status === "new") {
-              badgeColor = "info";
-            } else if (task.status === "pending") {
-              badgeColor = "primary";
-            } else if (task.status === "canceled") {
-              badgeColor = "danger";
-            } else if (task.status === "complate") {
-              badgeColor = "success";
-            }
+        {pendingTask &&
+          pendingTask.map((task) => {
             return (
               <div
                 className="col-12 col-lg-4 col-sm-6 col-md-4  p-2"
@@ -72,7 +63,7 @@ const AllTask = () => {
                       <a className="icon-nav text-danger mx-1">
                         <AiOutlineDelete />
                       </a>
-                      <a className={`badge float-end bg-${badgeColor}`}>
+                      <a className="badge float-end bg-primary">
                         {task.status}
                       </a>
                     </p>
@@ -86,4 +77,4 @@ const AllTask = () => {
   );
 };
 
-export default AllTask;
+export default PendingTask;

@@ -1,75 +1,197 @@
 //external lib import
 import axios from "axios";
+import SessionHelper from "../helper/SessionHelper";
+import ToastMessage from "../helper/ToastMessage";
+import { setDashboardSummary } from "../redux/features/dashboardSlice";
+import { removeLoading, setLoading } from "../redux/features/loaderSlice";
+import {
+  setAllTask,
+  setCancledTask,
+  setNewTask,
+  setPendingTask,
+  setComplateTask,
+} from "../redux/features/taskSlice";
 
-axios.defaults.baseURL = "https://mern-project-server-api.herokuapp.com/api/v1";
+import store from "../redux/store/store";
+
+axios.defaults.baseURL = "http://localhost:8080/api/v1";
 axios.defaults.headers.common["Authorization"] =
-  "Bearer " + sessionStorage.getItem("token");
+  "Bearer " + SessionHelper.getToken();
 
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
 
 class ApiRequest {
-  static getRequest(url) {
-    axios
-      .get(url)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else {
-          return null;
-        }
+  static RegistrationUserRequest({ name, userName, email, phone, password }) {
+    return axios
+      .post("/user/registrationUser", {
+        name,
+        userName,
+        email,
+        phone,
+        password,
       })
-      .catch((err) => {
-        console.log(err);
-        return null;
-      });
-  }
-
-  static postRequest(url, postJson) {
-    axios
-      .post(url, postJson)
       .then((response) => {
         if (response.status === 201) {
-          return response.data;
-        } else {
-          return null;
+          return true;
         }
       })
       .catch((err) => {
-        console.log(err);
-        return null;
+        if (err.response.status === 409) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
       });
   }
-
-  static updateRequest(url, postJson) {
-    axios
-      .update(url, postJson)
+  static LoginUserRequest({ email, phone, password }) {
+    store.dispatch(setLoading());
+    return axios
+      .post("/user/loginUser", {
+        email,
+        phone,
+        password,
+      })
       .then((response) => {
+        store.dispatch(removeLoading());
         if (response.status === 200) {
-          return response.data;
-        } else {
-          return null;
+          SessionHelper.setToken(response.data.accessToken);
+          SessionHelper.setUserDetails(response.data.user);
+          return true;
         }
       })
       .catch((err) => {
-        console.log(err);
-        return null;
+        store.dispatch(removeLoading());
+        if (err.response.status === 404) {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        } else if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
       });
   }
-
-  static deleteRequest(url) {
-    axios
-      .delete(url)
+  static CreateNewTaskRequest(title, body) {
+    store.dispatch(setLoading());
+    return axios
+      .post("/task/createTask", {
+        title,
+        body,
+      })
       .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else {
-          return null;
+        console.log(response);
+        store.dispatch(removeLoading());
+        if (response.status === 201) {
+          return true;
         }
       })
       .catch((err) => {
         console.log(err);
-        return null;
+
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+  static SetAllTaskRequest() {
+    store.dispatch(setLoading());
+    axios
+      .get("/task/selectTask")
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          store.dispatch(setAllTask(response.data));
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+  static SetTaskStatusRequest(status) {
+    store.dispatch(setLoading());
+    return axios
+      .get("/task/selectTaskByStatus/" + status)
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          if (status === "new") {
+            store.dispatch(setNewTask(response.data));
+          } else if (status === "pending") {
+            store.dispatch(setPendingTask(response.data));
+          } else if (status === "canceled") {
+            store.dispatch(setCancledTask(response.data));
+          } else if (status === "complate") {
+            store.dispatch(setComplateTask(response.data));
+          } else {
+            ToastMessage.errorMessage("Please Provite Task Status");
+          }
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+  static SetDashboardSummaryRequest() {
+    store.dispatch(setLoading());
+    axios
+      .get("/task/dashboardSummary")
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          store.dispatch(setDashboardSummary(response.data));
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          SessionHelper.removeToken("user");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
       });
   }
 }

@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const LazyLoader = () => {
   return (
-    <div>LazyLoader</div>
-  )
-}
+    <div className="LoadingOverlay">
+      <div className="Line-Progress">
+        <div className="indeterminate"></div>
+      </div>
+    </div>
+  );
+};
 
-export default LazyLoader
+export default LazyLoader;

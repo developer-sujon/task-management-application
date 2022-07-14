@@ -3,43 +3,37 @@ const Task = require("../../model/Task");
 
 //createTask
 exports.createTask = (req, res) => {
-  console.log(req);
-
   const { title, body, photo } = req.body;
 
   const newTask = {
     title,
     body,
     photo,
-    userId: req.id,
+    userId: req.userName,
     photo,
   };
 
   Task.create(newTask, (err, data) => {
     if (err) {
       console.log(err);
-      res
-        .status(500)
-        .json({ status: "fail", data: "there was server side error" });
+      res.status(500).json({ message: "there was server side error" });
     } else {
-      res.json({ status: "success", data: data });
+      res.status(201).json(data);
     }
   });
 };
 
 //selectTask;
 exports.selectTask = (req, res) => {
-  Task.aggregate([{ $match: { userId: req.id } }], (err, data) => {
+  Task.aggregate([{ $match: { userId: req.userName } }], (err, data) => {
     if (err) {
       console.log(err);
-      res
-        .status(500)
-        .json({ status: "fail", data: "there was server side error" });
+      res.status(500).json({ message: "there was server side error" });
     } else {
       if (data && data.length) {
-        res.json({ status: "success", data: data });
+        res.json(data);
       } else {
-        res.json({ status: "fail", data: "Task not found" });
+        res.status(404).json({ message: "Task not found" });
       }
     }
   });
@@ -49,18 +43,16 @@ exports.selectTask = (req, res) => {
 exports.selectTaskByStatus = (req, res) => {
   const { status } = req.params;
   Task.aggregate(
-    [{ $match: { userId: req.id, status: status } }],
+    [{ $match: { userId: req.userName, status: status } }],
     (err, data) => {
       if (err) {
         console.log(err);
-        res
-          .status(500)
-          .json({ status: "fail", data: "there was server side error" });
+        res.status(500).json({ message: "there was server side error" });
       } else {
         if (data && data.length) {
-          res.json({ status: "success", data: data });
+          res.json(data);
         } else {
-          res.json({ status: "fail", data: "Task not found" });
+          res.status(404).json({ message: "Task not found" });
         }
       }
     },
@@ -74,23 +66,22 @@ exports.deleteTask = (req, res) => {
   Task.find({ _id: id }, (err, data) => {
     if (err) {
       console.log(err);
-      res
-        .status(500)
-        .json({ status: "fail", data: "there was server side error" });
+      res.status(500).json({ message: "there was server side error" });
     } else {
       if (data && data.length) {
-        Task.findByIdAndDelete({ _id: id, userId: req.id }, (err, data) => {
-          if (err) {
-            console.log(err);
-            res
-              .status(500)
-              .json({ status: "fail", data: "there was server side error" });
-          } else {
-            res.json({ status: "success", data: data });
-          }
-        });
+        Task.findByIdAndDelete(
+          { _id: id, userName: req.userName },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+              res.status(500).json({ message: "there was server side error" });
+            } else {
+              res.json(data);
+            }
+          },
+        );
       } else {
-        res.json({ status: "fail", data: "Task not found" });
+        res.status(404).json({ message: "Task not found" });
       }
     }
   });
@@ -104,38 +95,59 @@ exports.updateTask = (req, res) => {
   Task.find({ _id: id }, (err, data) => {
     if (err) {
       console.log(err);
-      res
-        .status(500)
-        .json({ status: "fail", data: "there was server side error" });
+      res.status(500).json({ message: "there was server side error" });
     } else {
       if (data && data.length) {
         Task.findByIdAndUpdate(
-          { _id: id, userId: req.id },
+          { _id: id, userName: req.userName },
           { title, body, status },
           { new: true },
           (err, data) => {
             if (err) {
               console.log(err);
-              res
-                .status(500)
-                .json({ status: "fail", data: "there was server side error" });
+              res.status(500).json({ message: "there was server side error" });
             } else {
-              res.json({ status: "success", data: data });
+              res.json(data);
             }
           },
         );
       } else {
-        res.json({ status: "fail", data: "Task not found" });
+        res.status(404).json({ message: "Task not found" });
       }
     }
   });
+};
+
+//filterTaskByDateAndStatus
+exports.filterTaskByDateAndStatus = (req, res) => {
+  const { toDate, status } = req.body;
+
+  Task.aggregate(
+    [
+      {
+        $match: {
+          userId: req.userName,
+          status: status,
+          createdAt: new Date(toDate),
+        },
+      },
+    ],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: "there was a server side error" });
+      } else {
+        res.json(data);
+      }
+    },
+  );
 };
 
 //dashboardSummary
 exports.dashboardSummary = (req, res) => {
   Task.aggregate(
     [
-      { $match: { userId: req.id } },
+      { $match: { userId: req.userName } },
       {
         $group: {
           _id: "$status",
@@ -146,11 +158,9 @@ exports.dashboardSummary = (req, res) => {
     (err, data) => {
       if (err) {
         console.log(err);
-        res
-          .status(500)
-          .json({ status: "success", data: "there was a server side error" });
+        res.status(500).json({ message: "there was a server side error" });
       } else {
-        res.json({ status: "success", data: data });
+        res.json(data);
       }
     },
   );
