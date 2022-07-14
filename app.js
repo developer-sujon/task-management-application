@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const app = new express();
 
-dotenv.config({ path: path.join(__dirname, "./.env") });
+dotenv.config({ path: path.join(__dirname, "./confiq.env") });
 
 //internal imports
 const connectDB = require("./src/confiq/db");

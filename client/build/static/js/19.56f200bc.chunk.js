@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkappname=self.webpackChunkappname||[]).push([[19],{3019:function(e,n,a){a.r(n);a(2791);var r=a(184);n.default=function(){return(0,r.jsx)("div",{children:"UserProfile"})}}}]);
+//# sourceMappingURL=19.56f200bc.chunk.js.map

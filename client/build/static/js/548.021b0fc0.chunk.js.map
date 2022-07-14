@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/548.021b0fc0.chunk.js","mappings":"mIAQA,UANuB,WACrB,OACE","sources":["components/ForgetPassword/ForgetPassword.jsx"],"sourcesContent":["import React from 'react'\r\n\r\nconst ForgetPassword = () => {\r\n  return (\r\n    <div>ForgetPassword</div>\r\n  )\r\n}\r\n\r\nexport default ForgetPassword"],"names":[],"sourceRoot":""}
