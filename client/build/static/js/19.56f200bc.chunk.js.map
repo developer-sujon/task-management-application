@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/19.56f200bc.chunk.js","mappings":"kIAMA,UAJoB,WAClB,OAAO","sources":["components/UserProfile/UserProfile.jsx"],"sourcesContent":["import React from \"react\";\r\n\r\nconst UserProfile = () => {\r\n  return <div>UserProfile</div>;\r\n};\r\n\r\nexport default UserProfile;\r\n"],"names":[],"sourceRoot":""}
