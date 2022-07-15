@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import RegistrationPage from "./pages/RegistrationPage";
 import AllTaskPage from "./pages/AllTaskPage";
 import SessionHelper from "./helper/SessionHelper";
+import SettingPage from "./pages/SettingPage";
 
 const App = () => {
   const token = SessionHelper.getToken();
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/pending-task" element={<PendingTaskPage />} />
             <Route path="/cancled-task" element={<CancledTaskPage />} />
             <Route path="/complate-task" element={<ComplatedTaskPage />} />
+            <Route path="/setting" element={<SettingPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
         ) : (

@@ -8,6 +8,7 @@ const {
   updateUser,
   selectUser,
   deleteUser,
+  changePassword,
 } = require("../../controller/user/userController");
 const authVerify = require("../../middleware/authVerify");
 
@@ -25,5 +26,8 @@ userRoutes.get("/selectUser", authVerify, selectUser);
 
 //deleteUser
 userRoutes.delete("/deleteUser", authVerify, deleteUser);
+
+//changePassword
+userRoutes.put("/changePassword", authVerify, changePassword);
 
 module.exports = userRoutes;

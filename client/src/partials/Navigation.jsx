@@ -1,5 +1,5 @@
 //External Lib Import
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Container, Navbar } from "react-bootstrap";
 import {
@@ -8,8 +8,10 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import { BsArrowsFullscreen } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import ApiRequest from "../APIRequest/ApiRequest";
 
 //Internal Lib Import
 import logo from "../assets/images/logo.svg";
@@ -18,7 +20,12 @@ import SessionHelper from "../helper/SessionHelper";
 function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const user = SessionHelper.getUserDetails();
+
+  useEffect(() => {
+    ApiRequest.ProfileSelectRequest();
+  }, []);
+
+  const userProfile = useSelector((state) => state.profile.value);
 
   const FullScreen = () => {
     if (isFullScreen === true) {
@@ -76,8 +83,8 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
             <div className="user-dropdown">
               <img
                 className="icon-nav-img icon-nav"
-                src={user && user.photo}
-                alt={user && user.userName}
+                src={userProfile && userProfile.photo}
+                alt={userProfile && userProfile.userName}
                 onClick={() => setOpenDropdown(!openDropdown)}
               />
               <div
@@ -90,10 +97,10 @@ function Navigation({ openMenu, setOpenMenu, title = "Home" }) {
                 <div className="mt-4 text-center">
                   <img
                     className="icon-nav-img"
-                    src={user && user.photo}
-                    alt={user && user.userName}
+                    src={userProfile && userProfile.photo}
+                    alt={userProfile && userProfile.userName}
                   />
-                  <h6>{user && user.name}</h6>
+                  <h6>{userProfile && userProfile.name}</h6>
                   <hr className="user-dropdown-divider  p-0" />
                 </div>
                 <NavLink

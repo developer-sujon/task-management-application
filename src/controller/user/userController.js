@@ -107,28 +107,31 @@ exports.loginUser = (req, res) => {
 //selectUser
 exports.selectUser = (req, res) => {
   const userName = req.userName;
-  User.aggregate([{ $match: { userName } }], (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ message: "there was server side error" });
-    } else {
-      if (data && data.length > 0) {
-        res.json(data);
+  User.aggregate(
+    [{ $match: { userName } }, { $project: { password: 0 } }],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: "there was server side error" });
       } else {
-        res.status(404).json({ message: "user not found" });
+        if (data && data.length > 0) {
+          res.json(data);
+        } else {
+          res.status(404).json({ message: "user not found" });
+        }
       }
-    }
-  });
+    },
+  );
 };
 
 //updateUser
 exports.updateUser = (req, res) => {
-  const { name, userName, phone, email, password, photo } = req.body;
+  const { name, phone, email, photo } = req.body;
   const ejectingUser = User.aggregate(
     [
       {
         $match: {
-          $or: [{ userName }, { phone }, { email }],
+          $or: [{ phone }, { email }],
         },
       },
     ],
@@ -138,36 +141,27 @@ exports.updateUser = (req, res) => {
         res.status(500).json({ message: "there was server side error" });
       } else {
         if (data && data.length > 0) {
-          bcrypt.hash(password, 10, (err, hash) => {
-            if (err) {
-              console.log(err);
-              res.status(500).json({ message: "there was server side error" });
-            } else {
-              const updatedUser = {
-                name,
-                phone,
-                email,
-                password: hash,
-                photo,
-              };
+          const updatedUser = {
+            name,
+            phone,
+            photo,
+          };
 
-              User.findByIdAndUpdate(
-                { _id: req.id },
-                updatedUser,
-                { new: true },
-                (err, data) => {
-                  if (err) {
-                    console.log(err);
-                    res.status(500).json({
-                      message: "there was server side error",
-                    });
-                  } else {
-                    res.json(data);
-                  }
-                },
-              );
-            }
-          });
+          User.findByIdAndUpdate(
+            { _id: req.id },
+            updatedUser,
+            { new: true },
+            (err, data) => {
+              if (err) {
+                console.log(err);
+                res.status(500).json({
+                  message: "there was server side error",
+                });
+              } else {
+                res.json({ message: "User Update Success" });
+              }
+            },
+          );
         } else {
           res.status(401).json({ message: "unauthorized credential" });
         }
@@ -187,4 +181,59 @@ exports.deleteUser = (req, res) => {
       res.json(data);
     }
   });
+};
+
+//changePassword
+exports.changePassword = (req, res) => {
+  const { previousPassword, newPassword, email } = req.body;
+  const ejectingUser = User.aggregate(
+    [
+      {
+        $match: {
+          email,
+        },
+      },
+    ],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: "there was server side error" });
+      } else {
+        if (data && data.length > 0) {
+          bcrypt.compare(previousPassword, data[0].password, (err, result) => {
+            if (result) {
+              bcrypt.hash(newPassword, 10, (err, hash) => {
+                if (err) {
+                  console.log(err);
+                  res
+                    .status(500)
+                    .json({ message: "there was server side error" });
+                } else {
+                  User.findByIdAndUpdate(
+                    { _id: req.id },
+                    { password: hash },
+                    { new: true },
+                    (err, data) => {
+                      if (err) {
+                        console.log(err);
+                        res.status(500).json({
+                          message: "there was server side error",
+                        });
+                      } else {
+                        res.json({ message: "Password Change Success" });
+                      }
+                    },
+                  );
+                }
+              });
+            } else {
+              res.status(400).json({ message: "Incorrect Password " });
+            }
+          });
+        } else {
+          res.status(401).json({ message: "unauthorized credential" });
+        }
+      }
+    },
+  );
 };

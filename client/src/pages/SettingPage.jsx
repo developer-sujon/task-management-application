@@ -1,18 +1,18 @@
-import React, { Suspense, lazy, Fragment } from "react";
+import React, { Suspense } from "react";
 import LazyLoader from "../components/MasterLayout/LazyLoader";
 import MasterLayout from "../components/MasterLayout/MasterLayout";
-const AllTask = lazy(() => import("../components/AllTask/AllTask"));
+import Setting from "../components/Setting/Setting";
 
-const AllTaskPage = () => {
+const SettingPage = () => {
   return (
     <>
       <MasterLayout>
         <Suspense fallback={<LazyLoader />}>
-          <AllTask />
+          <Setting />
         </Suspense>
       </MasterLayout>
     </>
   );
 };
 
-export default AllTaskPage;
+export default SettingPage;

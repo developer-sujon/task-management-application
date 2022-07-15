@@ -4,6 +4,7 @@ import SessionHelper from "../helper/SessionHelper";
 import ToastMessage from "../helper/ToastMessage";
 import { setDashboardSummary } from "../redux/features/dashboardSlice";
 import { removeLoading, setLoading } from "../redux/features/loaderSlice";
+import { SetProfile } from "../redux/features/profileSlice";
 import {
   setAllTask,
   setCancledTask,
@@ -14,7 +15,7 @@ import {
 
 import store from "../redux/store/store";
 
-axios.defaults.baseURL = "/api/v1";
+axios.defaults.baseURL = "http://localhost:8080/api/v1";
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + SessionHelper.getToken();
 
@@ -39,9 +40,6 @@ class ApiRequest {
       .catch((err) => {
         if (err.response.status === 409) {
           ToastMessage.errorMessage(err.response.data.message);
-          SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
-          window.location.href = "/login";
           return false;
         } else {
           ToastMessage.errorMessage(err.response.data.message);
@@ -61,7 +59,6 @@ class ApiRequest {
         store.dispatch(removeLoading());
         if (response.status === 200) {
           SessionHelper.setToken(response.data.accessToken);
-          SessionHelper.setUserDetails(response.data.user);
           return true;
         }
       })
@@ -73,8 +70,6 @@ class ApiRequest {
         } else if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
-          window.location.href = "/login";
           return false;
         } else {
           ToastMessage.errorMessage(err.response.data.message);
@@ -103,7 +98,6 @@ class ApiRequest {
         if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
           window.location.href = "/login";
           return false;
         } else {
@@ -127,7 +121,6 @@ class ApiRequest {
         if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
           window.location.href = "/login";
           return false;
         } else {
@@ -161,7 +154,6 @@ class ApiRequest {
         if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
           window.location.href = "/login";
           return false;
         } else {
@@ -170,6 +162,80 @@ class ApiRequest {
         }
       });
   }
+  static ProfileSelectRequest() {
+    store.dispatch(setLoading());
+    axios
+      .get("/user/selectUser")
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          store.dispatch(SetProfile(response.data[0]));
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+
+  static ProfileUpdateRequest(name, phone, photo, email) {
+    store.dispatch(setLoading());
+    return axios
+      .patch("/user/updateUser", { name, phone, photo, email })
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          ToastMessage.successMessage("Profile Update Success");
+          return true;
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+
+  static ChangePasswordRequest(previousPassword, newPassword, email) {
+    store.dispatch(setLoading());
+    return axios
+      .put("/user/changePassword", { previousPassword, newPassword, email })
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          ToastMessage.successMessage("Password Change Success");
+          return true;
+        }
+      })
+      .catch((err) => {
+        store.dispatch(removeLoading());
+        if (err.response.status === 401) {
+          ToastMessage.errorMessage(err.response.data.message);
+          SessionHelper.removeToken("accessToken");
+          window.location.href = "/login";
+          return false;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return false;
+        }
+      });
+  }
+
   static SetDashboardSummaryRequest() {
     store.dispatch(setLoading());
     axios
@@ -185,7 +251,6 @@ class ApiRequest {
         if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
-          SessionHelper.removeToken("user");
           window.location.href = "/login";
           return false;
         } else {

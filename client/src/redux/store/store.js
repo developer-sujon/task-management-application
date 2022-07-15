@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import dashboardSlice from "../features/dashboardSlice";
 import loaderSlice from "../features/loaderSlice";
+import profileSlice from "../features/profileSlice";
 import taskSlice from "../features/taskSlice";
 
 const store = configureStore({
@@ -8,6 +9,7 @@ const store = configureStore({
     task: taskSlice,
     loader: loaderSlice,
     dashboard: dashboardSlice,
+    profile: profileSlice,
   },
 });
 
