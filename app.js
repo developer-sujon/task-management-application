@@ -72,9 +72,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
-// 404 not found handler
-// app.use(notFoundErrorHandler);
-
 // Default Error Handler
 app.use((err, req, res, next) => {
   const message = err.message ?? "Server Error Occured";

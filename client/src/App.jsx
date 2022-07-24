@@ -1,5 +1,5 @@
 //external imports
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FullScreenLoader from "./components/MasterLayout/FullScreenLoader";
 
@@ -8,7 +8,6 @@ import CancledTaskPage from "./pages/CancledTaskPage";
 import ComplatedTaskPage from "./pages/ComplatedTaskPage";
 import CreateTaskPage from "./pages/CreateTaskPage";
 import DashboardPage from "./pages/DashboardPage";
-import ForgetPasswordPage from "./pages/ForgetPasswordPage";
 import LoginPage from "./pages/LoginPage";
 import NewTaskPage from "./pages/NewTaskPage";
 import NotFoundPage from "./pages/NotFound";
@@ -18,6 +17,9 @@ import RegistrationPage from "./pages/RegistrationPage";
 import AllTaskPage from "./pages/AllTaskPage";
 import SessionHelper from "./helper/SessionHelper";
 import SettingPage from "./pages/SettingPage";
+import SendOptPage from "./pages/SendOptPage";
+import VerifyOptPage from "./pages/VerifyOptPage";
+import CreatePasswordPage from "./pages/CreatePasswordPage";
 
 const App = () => {
   const token = SessionHelper.getToken();
@@ -27,25 +29,35 @@ const App = () => {
       <Routes>
         {token ? (
           <>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/all-task" element={<AllTaskPage />} />
-            <Route path="/create-task" element={<CreateTaskPage />} />
-            <Route path="/new-task" element={<NewTaskPage />} />
-            <Route path="/pending-task" element={<PendingTaskPage />} />
-            <Route path="/cancled-task" element={<CancledTaskPage />} />
-            <Route path="/complate-task" element={<ComplatedTaskPage />} />
-            <Route path="/setting" element={<SettingPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route exact path="/" element={<DashboardPage />} />
+            <Route exact path="/dashboard" element={<DashboardPage />} />
+            <Route exact path="/profile" element={<ProfilePage />} />
+            <Route exact path="/all-task" element={<AllTaskPage />} />
+            <Route exact path="/create-task" element={<CreateTaskPage />} />
+            <Route exact path="/new-task" element={<NewTaskPage />} />
+            <Route exact path="/pending-task" element={<PendingTaskPage />} />
+            <Route exact path="/cancled-task" element={<CancledTaskPage />} />
+            <Route
+              exact
+              path="/complate-task"
+              element={<ComplatedTaskPage />}
+            />
+            <Route exact path="/setting" element={<SettingPage />} />
+            <Route exact path="*" element={<NotFoundPage />} />
           </>
         ) : (
           <>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/registration" element={<RegistrationPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forget-password" element={<ForgetPasswordPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route exact path="/" element={<LoginPage />} />
+            <Route exact path="/registration" element={<RegistrationPage />} />
+            <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/send-otp" element={<SendOptPage />} />
+            <Route exact path="/verify-otp" element={<VerifyOptPage />} />
+            <Route
+              exact
+              path="/create-password"
+              element={<CreatePasswordPage />}
+            />
+            <Route exact path="*" element={<NotFoundPage />} />
           </>
         )}
       </Routes>

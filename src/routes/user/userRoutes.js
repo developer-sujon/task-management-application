@@ -9,6 +9,9 @@ const {
   selectUser,
   deleteUser,
   changePassword,
+  sendOpt,
+  verifyOtp,
+  passwordRecovery,
 } = require("../../controller/user/userController");
 const authVerify = require("../../middleware/authVerify");
 
@@ -29,5 +32,14 @@ userRoutes.delete("/deleteUser", authVerify, deleteUser);
 
 //changePassword
 userRoutes.put("/changePassword", authVerify, changePassword);
+
+//sendOpt
+userRoutes.get("/sendOpt/:email", sendOpt);
+
+//verifyOtp
+userRoutes.get("/verifyOtp/:email/:otp", verifyOtp);
+
+//passwordRecovery
+userRoutes.post("/passwordRecovery", passwordRecovery);
 
 module.exports = userRoutes;

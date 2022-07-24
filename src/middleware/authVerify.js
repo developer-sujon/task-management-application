@@ -15,13 +15,13 @@ const authVerify = async (req, res, next) => {
     let token = authorization.split(" ")[1];
 
     if (!token) {
-      throw error("Unauthorized Credentials", 401);
+      throw error("Unauthorized Credentials ", 401);
     }
 
     const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     if (!decoded) {
-      throw error("Unauthorized Credentials", 401);
+      throw error("Unauthorized Credentials ", 401);
     }
 
     const user = await User.aggregate([
@@ -29,7 +29,7 @@ const authVerify = async (req, res, next) => {
     ]);
 
     if (!user.length > 0) {
-      throw error("Unauthorized Credentials", 401);
+      throw error("Unauthorized Credentials ", 401);
     }
 
     req.id = user[0]._id;
@@ -37,7 +37,7 @@ const authVerify = async (req, res, next) => {
 
     next();
   } catch (e) {
-    next(e);
+    res.status(401).json({ message: e.message });
   }
 };
 

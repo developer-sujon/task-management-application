@@ -7,6 +7,7 @@ import {
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import ApiRequest from "../../APIRequest/ApiRequest";
+import AleartMessage from "../../helper/AleartMessage";
 
 const PendingTask = () => {
   useEffect(() => {
@@ -14,6 +15,12 @@ const PendingTask = () => {
   }, []);
 
   const pendingTask = useSelector((state) => state.task.pendingTask);
+
+  const deleteTask = (id) => {
+    AleartMessage.deleteTask(id).then((r) => {
+      ApiRequest.SetTaskStatusRequest("pending");
+    });
+  };
 
   return (
     <Container fluid={true} className="content-body">
@@ -61,7 +68,7 @@ const PendingTask = () => {
                         <AiOutlineEdit />
                       </a>
                       <a className="icon-nav text-danger mx-1">
-                        <AiOutlineDelete />
+                        <AiOutlineDelete onClick={() => deleteTask(task._id)} />
                       </a>
                       <a className="badge float-end bg-primary">
                         {task.status}

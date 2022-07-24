@@ -99,7 +99,7 @@ const RegistrationUser = () => {
                   Sign In
                 </Link>
                 <br />
-                <Link className="text-center" to="/forgetpass">
+                <Link className="text-center" to="/send-otp">
                   Forget Password
                 </Link>
               </div>

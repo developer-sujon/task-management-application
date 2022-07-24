@@ -76,7 +76,7 @@ exports.deleteTask = (req, res) => {
               console.log(err);
               res.status(500).json({ message: "there was server side error" });
             } else {
-              res.json(data);
+              res.json({ message: "Task Delete Succesfull" });
             }
           },
         );
@@ -90,7 +90,7 @@ exports.deleteTask = (req, res) => {
 //updateTask;
 exports.updateTask = (req, res) => {
   const { id } = req.params;
-  const { title, body, status } = req.body;
+  const { status } = req.body;
 
   Task.find({ _id: id }, (err, data) => {
     if (err) {
@@ -100,14 +100,14 @@ exports.updateTask = (req, res) => {
       if (data && data.length) {
         Task.findByIdAndUpdate(
           { _id: id, userName: req.userName },
-          { title, body, status },
+          { status },
           { new: true },
           (err, data) => {
             if (err) {
               console.log(err);
               res.status(500).json({ message: "there was server side error" });
             } else {
-              res.json(data);
+              res.json({ message: "Task Updae Successfull" });
             }
           },
         );
@@ -128,7 +128,7 @@ exports.filterTaskByDateAndStatus = (req, res) => {
         $match: {
           userId: req.userName,
           status: status,
-          createdAt: new Date(toDate),
+          createdAt: { $lte: new Date(toDate) },
         },
       },
     ],

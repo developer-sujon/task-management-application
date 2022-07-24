@@ -3,19 +3,31 @@ class SessionHelper {
     sessionStorage.setItem("accessToken", accessToken);
   }
   static getToken() {
-    return sessionStorage.getItem("accessToken") || null;
+    return sessionStorage.getItem("accessToken");
   }
-  static removeToken(key) {
-    return sessionStorage.removeItem(key);
+  static removeToken() {
+    return sessionStorage.removeItem("accessToken");
   }
   static setUserDetails(user) {
     sessionStorage.setItem("user", JSON.stringify(user));
   }
   static getUserDetails() {
-    return JSON.parse(sessionStorage.getItem("user")) || null;
+    return JSON.parse(sessionStorage.getItem("user"));
   }
-  static removeUserDetails(key) {
-    return sessionStorage.removeItem(key);
+  static removeUserDetails() {
+    return sessionStorage.removeItem("user");
+  }
+  static setOtp(otp) {
+    sessionStorage.setItem("otp", JSON.stringify(otp));
+  }
+  static getOtp() {
+    return JSON.parse(sessionStorage.getItem("otp"));
+  }
+  static setOtpEmail(email) {
+    sessionStorage.setItem("otpEmail", JSON.stringify(email));
+  }
+  static getOtpEmail() {
+    return JSON.parse(sessionStorage.getItem("otpEmail"));
   }
 }
 

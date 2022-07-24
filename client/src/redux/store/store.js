@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import accountRecoverySlice from "../features/accountRecoverySlice";
 import dashboardSlice from "../features/dashboardSlice";
 import loaderSlice from "../features/loaderSlice";
 import profileSlice from "../features/profileSlice";
@@ -10,6 +11,7 @@ const store = configureStore({
     loader: loaderSlice,
     dashboard: dashboardSlice,
     profile: profileSlice,
+    accountRecovery: accountRecoverySlice,
   },
 });
 

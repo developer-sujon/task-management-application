@@ -15,9 +15,17 @@ import {
 
 import store from "../redux/store/store";
 
-axios.defaults.baseURL = "/api/v1";
+axios.defaults.baseURL = "http://localhost:8080/api/v1";
+
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + SessionHelper.getToken();
+
+// axios.defaults.headers = {
+//   "Cache-Control": "no-cache",
+//   Pragma: "no-cache",
+//   Expires: "0",
+//   Authorization: "Bearer " + SessionHelper.getToken(),
+// };
 
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
@@ -85,7 +93,6 @@ class ApiRequest {
         body,
       })
       .then((response) => {
-        console.log(response);
         store.dispatch(removeLoading());
         if (response.status === 201) {
           return true;
@@ -108,7 +115,7 @@ class ApiRequest {
   }
   static SetAllTaskRequest() {
     store.dispatch(setLoading());
-    axios
+    return axios
       .get("/task/selectTask")
       .then((response) => {
         store.dispatch(removeLoading());
@@ -162,9 +169,43 @@ class ApiRequest {
         }
       });
   }
+  static deleteTaskRequest(id) {
+    store.dispatch(setLoading());
+    return axios
+      .delete("/task/deleteTask/" + id)
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(removeLoading());
+        ToastMessage.errorMessage(err.response.data.message);
+        return null;
+      });
+  }
+  static updateTaskRequest(id, status) {
+    store.dispatch(setLoading());
+    return axios
+      .patch("/task/updateTask/" + id, { status: status })
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(removeLoading());
+        ToastMessage.errorMessage(err.response.data.message);
+        return null;
+      });
+  }
   static ProfileSelectRequest() {
     store.dispatch(setLoading());
-    axios
+    return axios
       .get("/user/selectUser")
       .then((response) => {
         store.dispatch(removeLoading());
@@ -185,7 +226,6 @@ class ApiRequest {
         }
       });
   }
-
   static ProfileUpdateRequest(name, phone, photo, email) {
     store.dispatch(setLoading());
     return axios
@@ -210,7 +250,6 @@ class ApiRequest {
         }
       });
   }
-
   static ChangePasswordRequest(previousPassword, newPassword, email) {
     store.dispatch(setLoading());
     return axios
@@ -235,7 +274,6 @@ class ApiRequest {
         }
       });
   }
-
   static SetDashboardSummaryRequest() {
     store.dispatch(setLoading());
     axios
@@ -247,16 +285,71 @@ class ApiRequest {
         }
       })
       .catch((err) => {
+        console.log(err);
         store.dispatch(removeLoading());
         if (err.response.status === 401) {
           ToastMessage.errorMessage(err.response.data.message);
           SessionHelper.removeToken("accessToken");
           window.location.href = "/login";
-          return false;
         } else {
           ToastMessage.errorMessage(err.response.data.message);
-          return false;
         }
+      });
+  }
+  static SendOpt(email) {
+    store.dispatch(setLoading());
+    return axios
+      .get("/user/sendOpt/" + email)
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 201) {
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(removeLoading());
+        if (err.response.status === 404) {
+          ToastMessage.errorMessage(err.response.data.message);
+          return null;
+        } else {
+          ToastMessage.errorMessage(err.response.data.message);
+          return null;
+        }
+      });
+  }
+  static VerifyOtpCode(email, otp) {
+    store.dispatch(setLoading());
+    return axios
+      .get("/user/verifyOtp/" + email + "/" + otp)
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(removeLoading());
+        ToastMessage.errorMessage(err.response.data.message);
+        return null;
+      });
+  }
+  static PasswordRecovery(email, otp, password) {
+    store.dispatch(setLoading());
+    return axios
+      .post("/user/passwordRecovery", { email, otp, password })
+      .then((response) => {
+        store.dispatch(removeLoading());
+        if (response.status === 200) {
+          return response;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        store.dispatch(removeLoading());
+        ToastMessage.errorMessage(err.response.data.message);
+        return null;
       });
   }
 }
