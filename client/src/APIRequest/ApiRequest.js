@@ -15,23 +15,19 @@ import {
 
 import store from "../redux/store/store";
 
-axios.defaults.baseURL = "http://localhost:8080/api/v1";
-
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " + SessionHelper.getToken();
-
-// axios.defaults.headers = {
-//   "Cache-Control": "no-cache",
-//   Pragma: "no-cache",
-//   Expires: "0",
-//   Authorization: "Bearer " + SessionHelper.getToken(),
-// };
-
-axios.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded";
+function configHeaders() {
+  // I tested all these below 3 lines , no on worked
+  axios.defaults.baseURL = "http://localhost:8080/api/v1";
+  axios.defaults.headers.common["Authorization"] =
+    "Bearer " + SessionHelper.getToken();
+  axios.defaults.headers.post["Content-Type"] =
+    "application/x-www-form-urlencoded";
+}
+configHeaders();
 
 class ApiRequest {
   static RegistrationUserRequest({ name, userName, email, phone, password }) {
+    configHeaders();
     return axios
       .post("/user/registrationUser", {
         name,
@@ -56,6 +52,7 @@ class ApiRequest {
       });
   }
   static LoginUserRequest({ email, phone, password }) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .post("/user/loginUser", {
@@ -86,6 +83,7 @@ class ApiRequest {
       });
   }
   static CreateNewTaskRequest(title, body) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .post("/task/createTask", {
@@ -114,6 +112,7 @@ class ApiRequest {
       });
   }
   static SetAllTaskRequest() {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .get("/task/selectTask")
@@ -137,6 +136,7 @@ class ApiRequest {
       });
   }
   static SetTaskStatusRequest(status) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .get("/task/selectTaskByStatus/" + status)
@@ -170,6 +170,7 @@ class ApiRequest {
       });
   }
   static deleteTaskRequest(id) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .delete("/task/deleteTask/" + id)
@@ -187,6 +188,7 @@ class ApiRequest {
       });
   }
   static updateTaskRequest(id, status) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .patch("/task/updateTask/" + id, { status: status })
@@ -204,6 +206,7 @@ class ApiRequest {
       });
   }
   static ProfileSelectRequest() {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .get("/user/selectUser")
@@ -227,6 +230,7 @@ class ApiRequest {
       });
   }
   static ProfileUpdateRequest(name, phone, photo, email) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .patch("/user/updateUser", { name, phone, photo, email })
@@ -251,6 +255,7 @@ class ApiRequest {
       });
   }
   static ChangePasswordRequest(previousPassword, newPassword, email) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .put("/user/changePassword", { previousPassword, newPassword, email })
@@ -275,6 +280,7 @@ class ApiRequest {
       });
   }
   static SetDashboardSummaryRequest() {
+    configHeaders();
     store.dispatch(setLoading());
     axios
       .get("/task/dashboardSummary")
@@ -297,6 +303,7 @@ class ApiRequest {
       });
   }
   static SendOpt(email) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .get("/user/sendOpt/" + email)
@@ -319,6 +326,7 @@ class ApiRequest {
       });
   }
   static VerifyOtpCode(email, otp) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .get("/user/verifyOtp/" + email + "/" + otp)
@@ -336,6 +344,7 @@ class ApiRequest {
       });
   }
   static PasswordRecovery(email, otp, password) {
+    configHeaders();
     store.dispatch(setLoading());
     return axios
       .post("/user/passwordRecovery", { email, otp, password })
