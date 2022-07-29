@@ -17,7 +17,7 @@ import store from "../redux/store/store";
 
 function configHeaders() {
   // I tested all these below 3 lines , no on worked
-  axios.defaults.baseURL = "http://localhost:8080/api/v1";
+  axios.defaults.baseURL = "/api/v1";
   axios.defaults.headers.common["Authorization"] =
     "Bearer " + SessionHelper.getToken();
   axios.defaults.headers.post["Content-Type"] =
