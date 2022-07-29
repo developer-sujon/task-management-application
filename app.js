@@ -67,7 +67,7 @@ app.use(express.static("client/build"));
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/task", taskRoutes);
 
-// Add React Front End Routing
+// Add React Front End Routings
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
