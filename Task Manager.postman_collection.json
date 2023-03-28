@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "13798546-4e37-4634-8adb-0229e02049e7",
+		"name": "Task Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19667438"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mohammad Sujon\",\r\n    \"userName\": \"developer-sujon\",\r\n    \"email\": \"devoloper.sujn@gmail.com\",\r\n    \"phone\": \"+8801772703056\",\r\n    \"password\": \"Pa$$w0rd!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/user/registrationUser",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"registrationUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"devoloper.sujon@gmail.com\",\r\n    \"password\": \"12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/user/loginUser",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"loginUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendOpt",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/user/sendOpt/devoloper.sujon@gmail.com",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"sendOpt",
+								"devoloper.sujon@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOtp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/user/verifyOtp/devoloper.sujon@gmail.com/aw5ho5",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"verifyOtp",
+								"devoloper.sujon@gmail.com",
+								"aw5ho5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordRecovery",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"devoloper.sujon@gmail.com\",\r\n    \"otp\": \"aw5ho5\",\r\n    \"password\": \"pass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/user/passwordRecovery",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"passwordRecovery"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "task",
+			"item": [
+				{
+					"name": "createTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Taks\",\r\n    \"body\": \"This is a Taks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/task/createTask",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"createTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboardSummary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/dashboardSummary",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"dashboardSummary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectTask",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/selectTask",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"selectTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "newTask",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/selectTaskByStatus/new",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"selectTaskByStatus",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pendingTask",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/selectTaskByStatus/pending",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"selectTaskByStatus",
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "complateTask",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/selectTaskByStatus/complate",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"selectTaskByStatus",
+								"complate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "canceledTask",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/task/selectTaskByStatus/canceled",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"selectTaskByStatus",
+								"canceled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTask",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"pending\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/task/updateTask/63a72110be52ecd7faa17f9f",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"task",
+								"updateTask",
+								"63a72110be52ecd7faa17f9f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "profileUpdate",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"MD SUJON ISLAM\",\r\n    \"phone\": \"01887878871\",\r\n    \"photo\": \"https://avatars.githubusercontent.com/u/65336862?v=4\",\r\n    \"email\": \"devoloper.sujon@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/user/updateUser",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"previousPassword\": \"pass\",\r\n    \"newPassword\": \"pass\",\r\n    \"email\": \"devoloper.sujon@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/user/changePassword",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"user",
+								"changePassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM5NjgxNjUxMDQsImlkIjoiNjNhNzIwZjhiZTUyZWNkN2ZhYTE3Zjg5IiwidXNlck5hbWUiOiJzZCIsImlhdCI6MTY3Njk5NDY5NH0.BDOmAeobv_VZOX1NRsx_SnJeB1TW1dGRVd_VJ0_Y69A",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURL",
+			"value": "https://hello-production-7b72.up.railway.app/api/v1",
+			"type": "string"
+		}
+	]
+}
